@@ -1,0 +1,243 @@
+{
+  "projectName": "TrackIT",
+  "projectDesc": "",
+  "baseUrl": "http://192.168.1.8:6060",
+  "data": [
+    {
+      "url": "/",
+      "smallDesc": "To check whether the server is running.",
+      "detailedDesc": "",
+      "method": "GET",
+      "requestParam": {},
+      "response": {
+        "message": "Up and running @ 6060 port"
+      }
+    },
+    {
+      "url": "/login",
+      "smallDesc": "To check the user.",
+      "detailedDesc": "",
+      "method": "POST",
+      "requestParam": {
+        "email": "User password",
+        "password": "User password"
+      },
+      "response": {
+        "login success": {
+          "_id": "5476c02adbf95669ee9b7e3f",
+          "email": "rsaravanan.btech@gmail.com",
+          "boards": [
+            {
+              "account": "mugilsoft",
+              "name": "edugamz",
+              "_id": "5476c02a68448ebc23ee6746"
+            },
+            {
+              "account": "mugilsoft",
+              "name": "inhouse",
+              "_id": "5476c05f68448ebc23ee674b"
+            },
+            {
+              "account": "mugilsoft",
+              "name": "trackit",
+              "_id": "5476d5ac68448ebc23ee674f"
+            }
+          ],
+          "type": "user"
+        },
+        "login fail": {
+          "message": "Login failed",
+          "error": "sever message"
+        }
+      }
+    },
+    {
+      "url": "/board",
+      "smallDesc": "Add Board.",
+      "detailedDesc": "",
+      "method": "POST",
+      "requestParam": {
+        "account": "account name",
+        "name": "board name",
+        "user": "array of users"
+      },
+      "response": {
+        "Added": {
+          "message": "Add account successfully",
+          "data": {
+            "__v": 0,
+            "account": "mugilsoft",
+            "name": "endpoints",
+            "_id": "5479551226647b84048dfc71",
+            "status": "active",
+            "user": [
+              "rsaravanan.btech@gmail.con",
+              "tamilvanan.btech@gmail.con"
+            ]
+          }
+        },
+        "Add Fail": {
+          "message": "Login failed",
+          "error": "sever message"
+        }
+      }
+    },
+    {
+      "url": "/task",
+      "smallDesc": "Get the board information.",
+      "detailedDesc": "",
+      "method": "GET",
+      "requestParam": {
+        "account": "account name",
+        "board": "board name"
+      },
+      "response": {
+        "found": [
+          {
+            "_id": "5476c03668448ebc23ee6749",
+            "title": "UI Design",
+            "logTime": 0,
+            "estimatedTime": 4,
+            "assignedTo": "unassigned",
+            "status": "not defined"
+          },
+          {
+            "_id": "5476d6a268448ebc23ee6753",
+            "title": "Google Ads ",
+            "logTime": 1,
+            "estimatedTime": 2,
+            "assignedTo": "unassigned",
+            "status": "completed"
+          }
+        ],
+        "No task found": {
+          "message": "No task found"
+        },
+        "fail": {
+          "message": "get tasks failed",
+          "error": "sever message"
+        }
+      }
+    },
+    {
+      "url": "/task/fetch",
+      "smallDesc": "Get the task information.",
+      "detailedDesc": "",
+      "method": "GET",
+      "requestParam": {
+        "account": "account name",
+        "board": "board name",
+        "id": "task id"
+      },
+      "response": {
+        "found": {
+          "_id": "5476d6a268448ebc23ee6753",
+          "title": "Google Ads ",
+          "comments": [
+            {
+              "owner": "5476c02adbf95669ee9b7e3f",
+              "type": "timesheet",
+              "desc": "Fixed",
+              "timeSheetId": "5476d6b368448ebc23ee6754"
+            },
+            {
+              "owner": "5476c02adbf95669ee9b7e3f",
+              "type": "timesheet",
+              "desc": "Testing",
+              "timeSheetId": "5477fd9d6b47c5682390b995"
+            }
+          ],
+          "logTime": 1,
+          "estimatedTime": 2,
+          "assignedTo": "unassigned",
+          "status": "completed"
+        },
+        "fail": {
+          "message": "fetch task error",
+          "error": "sever message"
+        }
+      }
+    },
+    {
+      "url": "/timeSheet",
+      "smallDesc": "Post the timesheet information.",
+      "detailedDesc": "",
+      "method": "POST",
+      "requestParam": {
+        "account": "account name",
+        "board": "board name",
+        "task": "task name",
+        "date": "date",
+        "hours": "hours",
+        "desc": "desc",
+        "owner": "owner id"
+      },
+      "response": {
+        "added": {
+          "message": "timeSheet added successfully",
+          "data": {
+            "__v": 0,
+            "date": "11/30/2014",
+            "hours": "1",
+            "board": "edugamz",
+            "task": "Google Ads ",
+            "account": "mugilsoft",
+            "owner": "5476c01368448ebc23ee6744",
+            "_id": "54796440d8af05cc02cf54a2"
+          }
+        },
+        "timeSheet Fail": {
+          "message": "timeSheet save",
+          "error": "server message"
+        },
+        "task update Fail": {
+          "message": "task comments update fail",
+          "error": "server message"
+        }
+      }
+    },
+    {
+      "url": "/board/dashboard",
+      "smallDesc": "Post the timesheet information.",
+      "detailedDesc": "",
+      "method": "POST",
+      "requestParam": {
+        "id": "board id"
+      },
+      "response": {
+        "found": {
+          "totalTasks": 2,
+          "recuringTasks": 0,
+          "totalHours": 6,
+          "completedTasks": 1,
+          "userHours": [
+            {
+              "hours": "3",
+              "owner": "5476c02adbf95669ee9b7e3f"
+            },
+            {
+              "hours": "3",
+              "owner": "5476c05fdbf95669ee9b7e41"
+            },
+            {
+              "hours": "3",
+              "owner": "5476c02adbf95669ee9b7e3f"
+            },
+            {
+              "hours": "1",
+              "owner": "5476c02adbf95669ee9b7e3f"
+            },
+            {
+              "hours": "1",
+              "owner": "5476c01368448ebc23ee6744"
+            }
+          ]
+        },
+        "Fail": {
+          "message": "dashBoard fail",
+          "error": "server message"
+        }
+      }
+    }
+  ]
+}

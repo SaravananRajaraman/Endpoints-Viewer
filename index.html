@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EndPoint</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/jquery.jsonview.css">
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/handlebars-v2.0.0.js"></script>
+    <script type="text/javascript" src="js/jquery.jsonview.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <style>
+        #informationView table {
+            width: 300px !important;
+        }
+        #informationView{
+            float: left;
+
+            overflow: auto;
+            min-height: 200px;
+            max-height: 400px;
+        }
+
+        #basicInformation {
+            float: left;
+            width: 48%;
+            margin-top: 10px;
+        }
+        #details {
+            float: right;
+            width: 48%;
+            margin-top:10px;
+        }
+        ol li a{
+           color: #6e6e6e;
+        }
+
+    </style>
+</head>
+<body>
+<div id="wrapper">
+    <div >
+        <div class="col-md-12" id="heading">
+            <script id=header type="text/x-handlebars-template">
+
+                    <h3 class="text-center">{{projectName}}</h3>
+                    <h4>{{projectDesc}}</h4>
+                    <h4 class="left">Url :{{baseUrl}}</h4>
+
+            </script>
+        </div>
+        <div class="">
+            <script id="basicInfo" type="text/x-handlebars-template">
+                <div id="basicInformation">
+                    <ol>
+                        {{#each data}}
+                        <li><a href="#" ><span class="urlText ">{{url}}</span > <span >-</span> <span >{{smallDesc}}</span></a></li>
+                        {{/each}}
+                    </ol>
+                </div>
+
+            </script>
+        </div>
+        <div id="details" class=""></div>
+       <script id="information" type="text/x-handlebars-template">
+
+            <div class="row" id="informationView">
+                <span>Url: {{url}}</span> <br>
+                <span>Title: {{smallDesc}}</span><br>
+                <span>Description: {{detailedDesc}}</span><br>
+                <table class="table-bordered table table-responsive table-striped">
+                    <h5>RequestParam</h5>
+                    <thead>
+                    <th>Parametter</th>
+                    <th>description</th>
+                    </thead>
+                    <tbody>
+                    {{#each requestParam}}
+                    <tr>
+                        <td>{{this.key}}</td>
+                        <td> {{this.value}}</td>
+                    </tr>
+                    {{/each}}
+                    </tbody>
+                </table>
+                <h5>Response</h5>
+                <table class="table-bordered table table-responsive">
+
+                    <thead>
+                    <th>Name</th>
+                    <th>Value</th>
+                    </thead>
+                    <tbody>
+                    {{#each response}}
+                    <tr>
+                        <td>{{this.key}}</td>
+                        <!--<td>{{this.key}} - {{this.value}}</td>-->
+                        <td>
+                            <button class="btn btn-primary json" data-json="{{this.value}}">JSON</button>
+                        </td>
+
+                    </tr>
+                    {{/each}}
+                    </tbody>
+                </table>
+
+            </div>
+
+        </script>
+        <div class="modal fade" id="jsonView" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                                class="sr-only">Close</span></button>
+                        <h4 class="text-center" id="myModalLabel">Json</h4>
+                    </div>
+                    <div class="modal-body container" id="jsonViewer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<script>
+
+    $(function () {
+        var apiList;
+
+        $.getJSON("trackit.json", function (data) {
+            apiList = data.data;
+//            console.log(data.data);
+            $('#heading').append(Handlebars.compile($("#header").html())(data));
+            $('body').append(Handlebars.compile($("#basicInfo").html())(data));
+
+            $("body").on("click", "li", function () {
+                var url = $(this).find(".urlText").text();
+                console.log(url);
+                for (var i = 0; i < apiList.length; i++) {
+                    if (apiList[i]["url"] == url) {
+
+                        Handlebars.registerHelper('each', function (context, options) {
+                            var fn = options.fn, inverse = options.inverse;
+                            var ret = "";
+
+                            var empty = true;
+                            for (key in context) {
+                                empty = false;
+                                break;
+                            }
+
+                            if (!empty) {
+                                // var temp={};
+                                for (key in context) {
+                                    ret = ret + fn({ 'key': key, 'value': JSON.stringify(context[key])});
+                                    //if(typeof(context[key])=== 'object'){
+                                    //console.log(context[key]);
+                                    //console.log({'key': key, 'value': JSON.stringify(context[key])});
+                                    //temp.push(context[key])
+                                    // temp[key]=(context[key])
+                                    //$("#jsonViewer").JSONView(context[key]);
+                                    //}
+
+
+                                }
+                                //$("#jsonViewer").JSONView(temp);
+                            } else {
+                                ret = inverse(this);
+                            }
+                            return ret;
+                        });
+                        $('#details').empty().append(Handlebars.compile($("#information").html())(apiList[i]));
+
+                        return;
+                    }
+
+                }
+            });
+
+
+        });
+        $("body").on('click', '.json', function () {
+            //alert($(this).attr('data-json'));
+            $("#jsonViewer").JSONView($(this).attr('data-json'));
+            $("#jsonView").modal('show');
+        });
+    });
+
+</script>
+</body>
+</html>
