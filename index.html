@@ -38,8 +38,9 @@
 </head>
 <body>
 <div id="wrapper">
+    <input type="file" id="fileForUpload"/>
     <div >
-        <div class="col-md-12" id="heading">
+        <div class="col-md-12" id="heading"></div>
             <script id=header type="text/x-handlebars-template">
 
                     <h3 class="text-center">{{projectName}}</h3>
@@ -47,8 +48,8 @@
                     <h4 class="left">Url :{{baseUrl}}</h4>
 
             </script>
-        </div>
-        <div class="">
+
+        <div class="basicInformation"></div>
             <script id="basicInfo" type="text/x-handlebars-template">
                 <div id="basicInformation">
                     <ol>
@@ -59,8 +60,8 @@
                 </div>
 
             </script>
-        </div>
-        <div id="details" class=""></div>
+
+        <div id="details" ></div>
        <script id="information" type="text/x-handlebars-template">
 
             <div class="row" id="informationView">
@@ -105,7 +106,7 @@
 
             </div>
 
-        </script>
+       </script>
         <div class="modal fade" id="jsonView" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
              aria-hidden="true">
             <div class="modal-dialog">
@@ -128,28 +129,53 @@
 <script>
 
     $(function () {
+        $('#fileForUpload').on('change',function(){
+            var file = document.getElementById("fileForUpload").files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.readAsText(file, "UTF-8");
+                reader.onload = function (evt) {
+                    //document.getElementById("fileContents").innerHTML = evt.target.result;
+                    var data=JSON.parse(evt.target.result);
+                    //console.log(data);
+                    apiList = data.data;
+                    //console.log(data.data[0]);
+                    renderHandle(data);
+                }
+                reader.onerror = function (evt) {
+                    alert("error");
+                    //document.getElementById("fileContents").innerHTML = "error reading file";
+                }
+            }
+        });
         var apiList;
-
+        var firstUrl;
         $.getJSON("trackit.json", function (data) {
             apiList = data.data;
-            //console.log(data.data);
-            $('#heading').append(Handlebars.compile($("#header").html())(data));
-            $('body').append(Handlebars.compile($("#basicInfo").html())(data));
-            var firstUrl=$("body").find('li').first().find(".urlText").text();
-            console.log(firstUrl);
-            viewInfo(firstUrl);
-            $("body").on("click", "li", function () {
-                var url = $(this).find(".urlText").text();
-                console.log(url);
-                viewInfo(url);
-            });
-
+            //console.log(data);
+           renderHandle(data);
         });
         $("body").on('click', '.json', function () {
             //alert($(this).attr('data-json'));
             $("#jsonViewer").JSONView($(this).attr('data-json'));
             $("#jsonView").modal('show');
         });
+        function renderHandle(data){
+            $('#heading').empty().append(Handlebars.compile($("#header").html())(data));
+            $('.basicInformation').empty().append(Handlebars.compile($("#basicInfo").html())(data));
+            /*
+                setTimeout(function(){
+                    firstUrl=$("body").find('li').first().find(".urlText").text();
+                    console.log(firstUrl);
+                },100);
+                //viewInfo(firstUrl);
+            */
+            $("body").on("click", "li", function () {
+                var url = $(this).find(".urlText").text();
+                console.log(url);
+                viewInfo(url);
+            });
+        }
         function viewInfo(url){
             for (var i = 0; i < apiList.length; i++) {
                 if (apiList[i]["url"] == url) {
@@ -176,7 +202,6 @@
             }
         }
     });
-
 </script>
 </body>
 </html>
