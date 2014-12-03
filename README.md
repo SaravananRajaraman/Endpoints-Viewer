@@ -40,3 +40,10 @@ You can rebuild Endpoints-Viewer on your own to tweak it or just so you can say 
   
 3. Load the JSON path in script.js file by default it locating  `trackit.json`
 4. Finally run the index.html file.
+
+###How to Improve It
+
+Create your own fork of [Endpoints-Viewer](https://github.com/SaravananRajaraman/Endpoints-Viewer)
+
+To share your changes, [submit a pull request](https://github.com/SaravananRajaraman/Endpoints-Viewer/compare?expand=1).
+
