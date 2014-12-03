@@ -1,0 +1,13 @@
+a{
+    text-decoration: none !important;
+}
+#details{
+    max-height: 480px;
+    min-height: 240px;
+    overflow: auto;
+}
+#jsonViewer{
+    max-height: 480px;
+    min-height: 240px;
+    overflow: auto;
+}
