@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EndPoint</title>
+    <link rel="stylesheet" href="stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="stylesheets/jquery.jsonview.css">
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <script type="text/javascript" src="javascripts/jquery.js"></script>
+    <script type="text/javascript" src="javascripts/handlebars-v2.0.0.js"></script>
+    <script type="text/javascript" src="javascripts/jquery.jsonview.js"></script>
+    <script type="text/javascript" src="javascripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="javascripts/script.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <div class="row clearfix"><br>
+            <div class="col-md-12 column">
+                <div class="jumbotron">
+                    <h1>
+                        Endpoints-Viewer
+                    </h1>
+                    <br>
+                    <p>
+                        A simple application to view all endpoints of restapi at one place.
+                    </p>
+                    <br>
+                    <label class="btn btn-primary" id="sample">
+                        Sample
+                    </label>
+                    <label class="btn btn-primary" for="fileForUpload">
+                        <input id="fileForUpload" type="file" style="display:none;">
+                        Browse...
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-12 column">
+                <div class="row clearfix">
+                    <div class="col-md-12 column" id="heading">
+                    </div>
+                </div>
+                <div class="row clearfix">
+                    <div class="col-md-5 column" id="basicInformation">
+                    </div>
+                    <div class="col-md-7 column" id="details">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <!--Popup modal-->
+            <div class="modal fade" id="jsonView" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                                    class="sr-only">Close</span></button>
+                            <h4 class="text-center" id="myModalLabel">Json</h4>
+                        </div>
+                        <div class="modal-body container" id="jsonViewer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!--Heading-->
+<script id=header type="text/x-handlebars-template">
+    <h2 class="text-center">{{projectName}}</h2>
+    <p class="col-md-offset-1">{{projectDesc}}</p>
+    <p class="col-md-offset-1"><b>Base Url :</b><code>{{baseUrl}}</code></p><br>
+</script>
+<!--basic Information-->
+<script id="basicInfo" type="text/x-handlebars-template">
+        <ol>
+            {{#each data}}
+            <li><span class="urlText" title="URL"><code>{{url}}</code></span ><span> - </span><span  title="Title of the URL">{{smallDesc}}</span></li>
+            {{/each}}
+        </ol>
+</script>
+<!--Detail information-->
+<script id="information" type="text/x-handlebars-template">
+        <div>Url: <code> {{url}}</code></div>
+        <div>Title: <i>{{smallDesc}}</i></div>
+        <div>Description: {{detailedDesc}}</div>
+        <table class="table-bordered table table-responsive table-striped text-center">
+            <h4>RequestParam :</h4>
+            <thead>
+            <th class="text-center">Parameters</th>
+            <th class="text-center">Descriptions</th>
+            </thead>
+            <tbody>
+            {{#each requestParam}}
+            <tr>
+                <td>{{this.key}}</td>
+                <td> {{this.value}}</td>
+            </tr>
+            {{/each}}
+            </tbody>
+        </table>
+        <h4>Response :</h4>
+        <table class="table-bordered table table-responsive table-striped text-center">
+            <thead>
+            <th class="text-center">Name</th>
+            <th class="text-center">Value</th>
+            </thead>
+            <tbody>
+            {{#each response}}
+            <tr>
+                <td>{{this.key}}</td>
+                <!--<td>{{this.key}} - {{this.value}}</td>-->
+                <td>
+                    <button class="btn btn-primary json" data-json="{{this.value}}">JSON</button>
+                </td>
+            </tr>
+            {{/each}}
+            </tbody>
+        </table>
+</script>
+
+</body>
+</html>
