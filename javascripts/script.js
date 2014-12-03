@@ -1,21 +1,4 @@
 $(function () {
-
-    $('#fileForUpload').on('change',function(){
-        var file = document.getElementById("fileForUpload").files[0];
-        if (file) {
-            var reader = new FileReader();
-            reader.readAsText(file, "UTF-8");
-            reader.onload = function (evt) {
-                var data=JSON.parse(evt.target.result);
-                apiList = data.data;
-                renderHandle(data);
-            }
-            reader.onerror = function (evt) {
-                alert("error");
-            }
-        }
-    });
-
     var apiList;
     var firstUrl;
     $("#sample").on('click',function(){
