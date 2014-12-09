@@ -16,6 +16,7 @@ $(function () {
     function renderHandle(data){
         $('#heading').empty().append(Handlebars.compile($("#header").html())(data));
         $('#basicInformation').empty().append(Handlebars.compile($("#basicInfo").html())(data));
+        viewInfo($('li').first().find(".urlText").text());
         $("body").on("click", "li", function () {
             var url = $(this).find(".urlText").text();
             viewInfo(url);
