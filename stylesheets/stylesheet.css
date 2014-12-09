@@ -187,6 +187,12 @@ hr {
 
 /* Buttons
 */
+#demo{
+    color: #b5e853;
+    border: 2px solid rgba(181, 232, 83, 0.68);
+    border-bottom: 2px solid rgba(181, 232, 83, 0.68);
+    border-top: 2px solid rgb(181, 232, 83);
+}
 
 .btn {
   display: inline-block;

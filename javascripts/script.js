@@ -1,12 +1,12 @@
 $(function () {
     var apiList;
     var firstUrl;
-    $("#sample").on('click',function(){
+//    $("#sample").on('click',function(){
         $.getJSON("json/trackit.json", function (data) {
             apiList = data.data;
             renderHandle(data);
         });
-    });
+//    });
 
     $("body").on('click', '.json', function () {
         $("#jsonViewer").JSONView($(this).attr('data-json'));
